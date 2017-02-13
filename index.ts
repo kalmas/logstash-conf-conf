@@ -136,12 +136,10 @@ class ConfigMap extends ConfigElement
     constructor(depth: number, map?: Object) {
         super(depth);
 
-        if (typeof map !== "undefined") {
-            const _map = new Map<string, any>();
+        if (typeof map !== 'undefined' && !Array.isArray(map)) {
             Object.keys(map).forEach(key => {
-                _map.set(key, map[key]);
+                this.set(key, map[key]);
             });
-            this.map = _map;
         }
     }
 
@@ -158,10 +156,12 @@ class ConfigMap extends ConfigElement
         let lines = new LineCollection();
         lines.push(new Line(`{`, this.depth));
         this.map.forEach((value: any, key: string) => {
-            if (typeof value === 'number') {
+            if (typeof value === 'number' || typeof value === 'boolean') {
                 lines.push(new Line(`${key} => ${value}`, this.nextDepth));
             } else if (typeof value === 'string') {
                 lines.push(new Line(`${key} => "${value}"`, this.nextDepth));
+            } else if (Array.isArray(value)){
+                lines.push(new Line(`${key} => ${value}`, this.nextDepth));
             } else if (value instanceof ConfigMap) {
                 lines.push(new Line(`${key} => {`, this.nextDepth));
                 lines.pushAll(value.toLines().slice(1));
@@ -211,7 +211,12 @@ class PluginStep extends Step
 
 const s = new Stage('input');
 
-s.addPlugin('stdin').set('foo', 'bar').set('bar', 10).set('baz', {'ing': 'aaaaa', 'woah': {'its': '2 deep'}});
+s.addPlugin('stdin')
+    .set('string', 'bar')
+    .set('number', 10)
+    .set('object', {'foo': 'bar', 'bin': {'baz': 2}})
+    .set('bool', true)
+    .set('array', ['one', 'two', 'three']);
 
 console.log(s.addPlugin('elastic').toString());
 
