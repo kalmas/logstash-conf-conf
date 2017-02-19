@@ -15,7 +15,7 @@ abstract class ConfigElement
 
 class Line extends ConfigElement
 {
-    constructor(private string: string, depth: number) {
+    constructor(private string: string = '', depth: number = 0) {
         super(depth);
     }
 
@@ -144,7 +144,7 @@ class ConfigMap extends ConfigElement
     }
 
     set(key: string, value: any): ConfigMap {
-        if (typeof value === 'object') {
+        if (typeof value === 'object' && ! Array.isArray(value)) {
             value = new ConfigMap(this.nextDepth, value);
         }
 
@@ -161,7 +161,7 @@ class ConfigMap extends ConfigElement
             } else if (typeof value === 'string') {
                 lines.push(new Line(`${key} => "${value}"`, this.nextDepth));
             } else if (Array.isArray(value)){
-                lines.push(new Line(`${key} => ${value}`, this.nextDepth));
+                lines.push(new Line(`${key} => ${JSON.stringify(value)}`, this.nextDepth));
             } else if (value instanceof ConfigMap) {
                 lines.push(new Line(`${key} => {`, this.nextDepth));
                 lines.pushAll(value.toLines().slice(1));
@@ -196,9 +196,9 @@ class PluginStep extends Step
     }
 
     toLines(): LineCollection {
-        let lines = new LineCollection();
-        lines.push(new Line(`${this.id} `, this.depth));
-        lines.pushAll(this.properties.toLines());
+        const lines = new LineCollection();
+        lines.push(new Line(`${this.id} {`, this.depth));
+        lines.pushAll(this.properties.toLines().slice(1));
         return lines;
     }
 
@@ -207,18 +207,43 @@ class PluginStep extends Step
     }
 }
 
+class LogstashConf {
+    private _input: Stage = new Stage('input');
+    private _filter: Stage = new Stage('filter');
+    private _output: Stage = new Stage('output');
 
+    get input(): Stage {
+        return this._input;
+    }
 
-const s = new Stage('input');
+    get filter(): Stage {
+        return this._filter;
+    }
 
-s.addPlugin('stdin')
-    .set('string', 'bar')
-    .set('number', 10)
-    .set('object', {'foo': 'bar', 'bin': {'baz': 2}})
-    .set('bool', true)
-    .set('array', ['one', 'two', 'three']);
+    get output(): Stage {
+        return this._output;
+    }
 
-console.log(s.addPlugin('elastic').toString());
+    toLines(): LineCollection {
+        const lines = new LineCollection();
+        lines.pushAll(this._input.toLines());
+        lines.push(new Line());
+        lines.pushAll(this._filter.toLines());
+        lines.push(new Line());
+        lines.pushAll(this._output.toLines());
+        return lines;
+    }
 
+    toString(pretty: boolean = true): string {
+        return this.toLines().toString(pretty).trim();
+    }
+}
 
-console.log(s.toString());
+class ConfConfig {
+    newConf(): LogstashConf {
+        return new LogstashConf();
+    }
+}
+
+const c = new ConfConfig();
+export { c as ConfConfig };

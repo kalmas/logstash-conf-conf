@@ -1,0 +1,20 @@
+{
+  "name": "logstash-conf-conf",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha -r ts-node/register src/**/test.ts"
+  },
+  "author": "",
+  "devDependencies": {
+    "@types/chai": "^3.4.34",
+    "@types/mocha": "^2.2.39",
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0",
+    "mocha-typescript": "^1.0.21",
+    "ts-node": "^2.1.0",
+    "typescript": "^2.1.6",
+    "typings": "^2.1.0"
+  }
+}
