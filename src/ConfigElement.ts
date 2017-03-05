@@ -1,5 +1,4 @@
-export abstract class ConfigElement
-{
+export abstract class ConfigElement {
     constructor(private _depth: number) {};
 
     get nextDepth(): number {

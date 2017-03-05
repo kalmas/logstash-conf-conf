@@ -1,11 +1,10 @@
 import { Line } from './Line';
 
-export class LineCollection
-{
+export class LineCollection {
     private array: Array<Line> = new Array();
 
     constructor(array?: Array<Line>) {
-        if (typeof array !== "undefined") {
+        if (typeof array !== 'undefined') {
             this.array = array;
         }
     }

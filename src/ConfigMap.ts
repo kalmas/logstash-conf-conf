@@ -2,8 +2,7 @@ import { ConfigElement } from './ConfigElement';
 import { Line } from './Line';
 import { LineCollection } from './LineCollection';
 
-export class ConfigMap extends ConfigElement
-{
+export class ConfigMap extends ConfigElement {
     private map: Map<string, any> = new Map<string, any>();
 
     constructor(depth: number, map?: Object) {

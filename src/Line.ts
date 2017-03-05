@@ -1,8 +1,7 @@
 import { ConfigElement } from './ConfigElement';
 
-export class Line extends ConfigElement
-{
-    constructor(private string: string = '', depth: number = 0) {
+export class Line extends ConfigElement {
+    constructor(private content: string = '', depth: number = 0) {
         super(depth);
     }
 
@@ -16,7 +15,7 @@ export class Line extends ConfigElement
             }
         }
 
-        str = str + this.string;
+        str = str + this.content;
 
         if (pretty) {
             str = str + '\n';

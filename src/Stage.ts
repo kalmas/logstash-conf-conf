@@ -3,22 +3,32 @@ import { Line } from './Line';
 import { LineCollection } from './LineCollection';
 import { PluginStep } from './PluginStep';
 import { Sequence } from './Sequence';
+import { Step } from './Step';
 
-export class Stage extends ConfigElement
-{
-    private sequence: Sequence = new Sequence(this.nextDepth);
+export class Stage extends ConfigElement {
+    private name: string;
+    protected sequence: Sequence = new Sequence(this.nextDepth);
 
-    constructor(private id: string) {
+    constructor(name: string) {
         super(0);
+        this.name = name;
     }
 
     addPlugin(id: string): PluginStep {
         return this.sequence.addPlugin(id);
     }
 
+    getPlugin(pluginName: string): PluginStep {
+        return this.sequence.getPlugin(pluginName);
+    }
+
+    getStep(index: number): Step {
+        return this.sequence.getStep(index);
+    }
+
     toLines(): LineCollection {
         const lines = new LineCollection();
-        lines.push(new Line(`${this.id} {`, this.depth));
+        lines.push(new Line(`${this.name} {`, this.depth));
         lines.pushAll(this.sequence.toLines());
         lines.push(new Line('}', this.depth))
 

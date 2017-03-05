@@ -57,7 +57,6 @@
         "no-internal-module": true,
         "no-trailing-whitespace": true,
         "no-unsafe-finally": true,
-        "no-unused-variable": true,
         "no-var-keyword": true,
         "one-line": [
             true,
@@ -66,7 +65,7 @@
         ],
         "quotemark": [
             true,
-            "double"
+            "single"
         ],
         "semicolon": [
             true,

@@ -5,30 +5,26 @@ import { Step } from './Step';
 
 export class PluginStep extends Step {
     private properties: ConfigMap;
-    private _pluginName: string;
+    private pluginName: string;
 
     constructor(pluginName: string, depth: number) {
         super(depth);
-        this._pluginName = pluginName;
+        this.pluginName = pluginName;
         this.properties = new ConfigMap(depth);
     }
 
-    get pluginName() {
-        return this._pluginName;
-    }
-
-    set(key: string, value: any) {
+    set(key: string, value: any): ConfigMap {
         return this.properties.set(key, value);
     }
 
-    toLines() {
+    toLines(): LineCollection {
         const lines = new LineCollection();
-        lines.push(new Line(`${this._pluginName} {`, this.depth));
+        lines.push(new Line(`${this.pluginName} {`, this.depth));
         lines.pushAll(this.properties.toLines().slice(1));
         return lines;
     }
 
-    toString(pretty: boolean = true) {
+    toString(pretty: boolean = true): string {
         return this.toLines().toString(pretty).trim();
     }
 }
