@@ -7,6 +7,10 @@ export class PluginStep extends Step {
     private properties: ConfigMap;
     private pluginName: string;
 
+    get name(): string {
+        return this.pluginName;
+    }
+
     constructor(pluginName: string, depth: number) {
         super(depth);
         this.pluginName = pluginName;

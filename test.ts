@@ -48,7 +48,7 @@ output {
         );
     });
 
-    it('builds an unprettified string', () => {
+    it('builds an un-prettified string', () => {
         expect(buildConf().toString(false)).to.equal('input { stdin { stringField => "bar" numberField => 10 objectField => { foo => "bar" bing => { bang => { bong => 3 } } } arrayField => ["one","two","three"] boolField => true } elasticsearch { } }  filter { }  output { }');
     });
 });
@@ -59,20 +59,20 @@ describe('Stage', () => {
         const esPlugin = conf.input.getPlugin(InputStage.elasticsearch);
         esPlugin.set('action', 'index');
 
-        expect(conf.input.getPlugin(InputStage.elasticsearch).pluginName).to.equal('elasticsearch');
+        expect(conf.input.getPlugin(InputStage.elasticsearch).name).to.equal('elasticsearch');
     });
 
-    it('gets non-existant plugin by name', () => {
+    it('gets non-existent plugin by name', () => {
         const conf = buildConf();
         expect(conf.input.getPlugin(InputStage.beats)).to.be.null;
     });
 
     it('gets plugin by index', () => {
         const conf = buildConf();
-        expect(conf.input.getStep(0).name).to.equal('elasticsearch')
+        expect(conf.input.getStep(1).name).to.equal('elasticsearch')
     });
 
-    it('gets non-existant plugin by index', () => {
+    it('gets non-existent plugin by index', () => {
         const conf = buildConf();
         expect(conf.input.getStep(75)).to.be.null;
     });

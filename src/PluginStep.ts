@@ -13,7 +13,7 @@ export class PluginStep extends Step {
         this.properties = new ConfigMap(depth);
     }
 
-    get pluginName() {
+    get name() {
         return this._pluginName;
     }
 

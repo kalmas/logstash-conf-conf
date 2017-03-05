@@ -16,7 +16,7 @@ export class Sequence extends ConfigElement {
     getPlugin(pluginName: string): PluginStep {
         const s = this.stack.find(step => {
             if (step instanceof PluginStep) {
-                return step.pluginName === pluginName;
+                return step.name === pluginName;
             }
             return false;
         });

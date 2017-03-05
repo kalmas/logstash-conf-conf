@@ -1,0 +1,9 @@
+= logstash-conf-conf =
+
+Generate logstash conf files using Typescript library. Just a goof.
+
+[source,js]
+----
+npm install
+npm test
+----
